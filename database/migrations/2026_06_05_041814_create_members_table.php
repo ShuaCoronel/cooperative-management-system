@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('member_id_number')->unique();
             $table->string('full_name');
-            $table->date("Date of Birth");
+            $table->date("date_of_birth");
             $table->enum('sex',['male','female']);
             $table->enum('civil_status', ['single','married','widowed','separated'])->default('single');
             $table->string('nationality');
