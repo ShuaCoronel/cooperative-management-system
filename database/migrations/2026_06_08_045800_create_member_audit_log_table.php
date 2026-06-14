@@ -18,7 +18,14 @@ return new class extends Migration
             $table->foreignId('changed_by')->constrained('users'); // admin changed the data
             
             // Strictly constrained scope of trackable actions
-            $table->enum('table_name', ['members', 'loans', 'savings_transactions', 'share_capital_transactions']);
+            $table->enum('table_name', [
+                'members', 
+                'loans', 
+                'savings_transactions',
+                'share_capital_transactions',
+                'dividend_declarations',
+                'dividend_allocations']);
+
             $table->enum('action', ['created', 'updated', 'deleted', 'restored']);
             
             // JSON columns store data arrays natively (perfect for structural snapshots)

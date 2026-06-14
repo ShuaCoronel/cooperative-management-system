@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('loan_id')->constrained('loans')->cascadeOnDelete();
             $table->foreignId('member_id')->constrained('members')->cascadeOnDelete();
 
+            $table->enum('status', ['active', 'released', 'replace']);
             $table->timestamp('created_at')->useCurrent();
         });
     }

@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('savings_account', function (Blueprint $table) {
+        Schema::create('savings_accounts', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('member_id')->constrained('members')->cascadeOnDelete(); 
             $table->string('account_number')->unique();
             $table->enum('product_type',['regular','time_deposit']);
-            $table->enum('status',['active','close','dormant'])->default('active');
+            $table->enum('status',['active','closed','dormant'])->default('active');
             $table->date('opened_at');
 
 

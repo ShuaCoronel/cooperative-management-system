@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->foreignId('loan_id')->constrained('loans')->cascadeOnDelete();
             $table->integer('period_number'); //month
+            $table->date('due_date');
 
 
             // financial breakdowns per installment (total will add up the principal and interest, used for clear tracking)

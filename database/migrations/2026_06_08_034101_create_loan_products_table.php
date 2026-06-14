@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('name'); // kind of loan eg. student loan, emergency, etc
-            $table->enum('interest_method',['flat','diminishin']); // flat fixed interest, diminishing interest based on the amount
+            $table->enum('interest_method',['flat','diminishing']); // flat fixed interest, diminishing interest based on the amount
             $table->enum('rate_period', ['monthly', 'annual']);
             
             $table->decimal('default_rate', 5, 2); // 5 mean the total digit, so it would be 3 whole 2 decimal

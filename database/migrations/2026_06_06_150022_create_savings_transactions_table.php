@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('savings_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('savings_account_id')->constrained('savings_account')->cascadeOnDelete();
+            $table->foreignId('savings_accounts_id')->constrained('savings_accounts')->cascadeOnDelete();
             $table->decimal('amount', 12,2);
             $table->enum('type',['deposit','withdrawal']);
             $table->date('transaction_date');

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('member_id')->constrained('members')->cascadeOnDelete();
             $table->decimal('amount',12,2);
             $table->enum('type',['deposit','withdrawal']);
-            $table->date('trasanction_date');
+            $table->date('transaction_date');
             $table->text('remarks')->nullable();
 
             //track which admin process the transaction?

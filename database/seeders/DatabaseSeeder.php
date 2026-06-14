@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
 
         Member::create([
         'member_id_number' => 'MEMBER-2026-00001',
-        'full_name' => 'System Member',
+        'full_name' => 'Coronel, Joshua S',
         'date_of_birth' => '1999-08-17',
         'sex' => 'male',
         'civil_status' => 'single',
