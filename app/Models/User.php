@@ -5,7 +5,9 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\UserRole;
+use App\Models\LoanPayment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -32,6 +34,8 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    // hash
     protected $hidden = [
         'password',
         'remember_token',
@@ -42,18 +46,46 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'role' =>UserRole::class,
+            'role' =>UserRole::class, //enum
         ];
     }
 
+
+    // relationship this is the owner and has one connected child
+    //Member Connection
     public function member()
     {
         return $this->hasOne(Member::class, 'user_id');
+    }
+
+
+    //shareCapitalTransaction Model Connection
+    public function processedShareCapitalTransactions(): HasMany {
+
+        return $this->hasMany(ShareCapitalTransaction::class, 'created_by');
+
+    }
+
+
+    // Loan Payment connection
+    public function processedLoanPayments() : HasMany {
+
+        return $this->hasMany(LoanPayment::class, 'created_by');
+        
+    }
+
+
+    public function declaredDividends() : HasMany {
+
+        return $this->hasMany(DividendDeclaration::class, 'created_by');
+        
     }
 
 

@@ -2,17 +2,23 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Member extends Model
 {
     //
+    // softdeletes, even deleted accidentally, it logs on softdeleted table
     use SoftDeletes;
 
 
+    protected $guarded = ['id'];
+
+
     protected $fillable = [
-    'user_id',
+        'user_id',
         'member_id_number',
         'full_name',
         'date_of_birth',
@@ -47,5 +53,29 @@ class Member extends Model
     return $this->belongsTo(User::class, 'user_id');
 
     }
+
+    public function savingsTransactions() {
+
+        return $this->hasMany(SavingsTransaction::class);
+
+    }
+
+    public function savingsAccounts() {
+
+        return $this->hasMany(SavingsAccount::class);
+        
+    }
+
+    public function shareCapitalTransactions() : HasMany {
+        return $this->hasMany(ShareCapitalTransaction::class, 'member_id');
+    }
+
+
+    public function dividendAllocation() : HasMany {
+
+        return $this->hasMany(DividendAllocation::class,'member_id');
+        
+    }
+
         
     }
