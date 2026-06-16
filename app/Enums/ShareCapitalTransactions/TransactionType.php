@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\ShareCapital;
+namespace App\Enums\ShareCapitalTransactions;
 
 enum TransactionType: string {
 
