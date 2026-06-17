@@ -7,10 +7,10 @@ use App\Enums\Log\AuditAction;
 use App\Enums\ShareCapitalTransactions\TransactionType;
 use App\Models\Member;
 use App\Models\MemberAuditLog;
-use Illuminate\Support\Facades\Auth;
-use App\Models\ShareCapitalTransaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -68,7 +68,7 @@ class ShareCapitalTransactionController extends Controller
             'type'                  => $type,
             'transaction_date'      => $validated['transaction_date'],
             'remarks'               => $validated['remarks'] ?? null,
-            'created_by'            => AUTH::id(),
+            'created_by'            => Auth::id(),
 
 
 
@@ -77,7 +77,7 @@ class ShareCapitalTransactionController extends Controller
 
             MemberAuditLog::create([
                 'member_id'         => $member->id,
-                'changed_by'        => AUTH::id(),
+                'changed_by'        => Auth::id(),
                 'table_name'        => AuditableTable::SHARE_CAPITAL_TRANSACTIONS,
                 'action'            => AuditAction::CREATED,
                 'old_values'        => null,
