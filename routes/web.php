@@ -2,6 +2,7 @@
 
 use App\Enums\UserRole;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SavingsTransactionController;
 use App\Http\Controllers\ShareCapitalTransactionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -44,11 +45,18 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function() {
 
     //Share capital transactions  check controller/ShareCapitalTransaction
-    Route::post('/member/{member::membe_id_number}/share-capital', [ShareCapitalTransactionController::class, 'store'])
+    Route::post('/members/{member:member_id_number}/share-capital', [ShareCapitalTransactionController::class, 'store'])
     ->name('member.share-capital.store');
 
+
+    // Savings account transactions
+    Route::post('/savings-accounts/{savingsAccount:account_number}/transactions',[SavingsTransactionController::class,'store'])
+    ->name('savings.accounts.transactions.store');
     }
 );
+
+
+
 
 
 
