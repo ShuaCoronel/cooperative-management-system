@@ -14,6 +14,7 @@ class LoanProduct extends Model
 
         'name',
         'interest_method',
+        'default_rate',
         'rate_period',
         'max_term_months',
         'is_active',
@@ -24,7 +25,7 @@ class LoanProduct extends Model
 
         return [
             'default_rate' => 'decimal:2',
-            'max_term_month' => 'decimal:2',
+            'max_term_months' => 'decimal:2',
             'is_active' => 'boolean',
 
             //appEnums link

@@ -1,9 +1,10 @@
 <?php
 
 use App\Enums\UserRole;
+use App\Http\Controllers\Admin\LoanController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SavingsTransactionController;
-use App\Http\Controllers\ShareCapitalTransactionController;
+use App\Http\Controllers\Admin\SavingsTransactionController;
+use App\Http\Controllers\Admin\ShareCapitalTransactionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,10 +20,12 @@ Route::get('/dashboard', function () {
     $user = Auth::user();
 
     // validate user data role and return respective dashboard for its role
-    if ($user -> role === UserRole::ADMIN) {
+    if ($user->role === UserRole::ADMIN) {
         return view('admin.dashboard', ['user'=>$user]);
- }
-    // if not go to membem.dashboard
+
+    }
+
+    // if not go to member.dashboard
     return view('member.dashboard', [
     // 'user' pair to $user variable and 'member' check the $user variable member data
     'user' => $user,
@@ -46,14 +49,22 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function() {
 
     //Share capital transactions  check controller/ShareCapitalTransaction
     Route::post('/members/{member:member_id_number}/share-capital', [ShareCapitalTransactionController::class, 'store'])
-    ->name('member.share-capital.store');
+    ->name('share-capital.store');
 
 
     // Savings account transactions
     Route::post('/savings-accounts/{savingsAccount:account_number}/transactions',[SavingsTransactionController::class,'store'])
-    ->name('savings.accounts.transactions.store');
+    ->name('savings.store');
+
+    // Loan Transactions
+    Route::post('/members/{member_id_number}/loans', [LoanController::class, 'store'])
+    ->name('loans.store');
+
+
+
     }
 );
+
 
 
 

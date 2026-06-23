@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Enums\Log\AuditableTable;
 use App\Enums\Log\AuditAction;
 use App\Enums\ShareCapitalTransactions\TransactionType;
+use App\Http\Controllers\Controller;
 use App\Models\MemberAuditLog;
 use App\Models\SavingsAccount;
 use Illuminate\Http\RedirectResponse;
