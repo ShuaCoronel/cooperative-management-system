@@ -81,13 +81,13 @@ class Loan extends Model
 
     }
 
-    public function schedules(): HasMany {
+    public function loanSchedules(): HasMany {
 
         return $this->hasMany(LoanSchedule::class, 'loan_id');
 
     }
 
-    public function payments() : HasMany {
+    public function LoanPayments() : HasMany {
 
         return $this->hasMany(LoanPayment::class, 'loan_id');
         

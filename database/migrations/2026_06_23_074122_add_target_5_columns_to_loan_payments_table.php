@@ -13,6 +13,18 @@ return new class extends Migration
     {
         Schema::table('loan_payments', function (Blueprint $table) {
             //
+
+            $table->foreignId('loan_schedule_id')
+                ->nullable()
+                ->after('loan_id')
+                ->constrained('loan_schedules')
+                ->restrictOnDelete();
+
+            $table->string('payment_method')->after('penalty_paid');
+
+            $table->string('reference_number')
+                    ->nullable()
+                    ->after('payment_method');
         });
     }
 
@@ -23,6 +35,12 @@ return new class extends Migration
     {
         Schema::table('loan_payments', function (Blueprint $table) {
             //
+            $table->dropForeign(['loan_schedule_id']);
+            $table->dropColumn([
+                'loan_schedule_id', 
+                'payment_method', 
+                'reference_number'
+            ]);
         });
     }
 };

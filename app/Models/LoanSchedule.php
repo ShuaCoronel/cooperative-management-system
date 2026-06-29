@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Loans\LoanScheduleStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Override;
 
 class LoanSchedule extends Model
@@ -44,6 +45,11 @@ class LoanSchedule extends Model
         // always check the column name in our erd or backend
         return $this->belongsTo(Loan::class,'loan_id');
 
+    }
+
+    public function loanPayments(): HasMany {
+
+        return $this->hasMany(LoanPayment::class, 'loan_schedule_id');
     }
 
 

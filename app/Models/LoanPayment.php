@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+
 class LoanPayment extends Model
 {
     //
@@ -16,10 +17,13 @@ class LoanPayment extends Model
 
     protected $fillable = [
         'loan_id',
+        'loan_schedule_id',
         'amount_paid',
         'principal_paid',
         'interest_paid',
         'penalty_paid',
+        'payment_method',
+        'reference_number',
         'payment_date',
         'remarks',
 
@@ -56,6 +60,12 @@ class LoanPayment extends Model
     public function collector(): BelongsTo {
 
         return $this->belongsTo(User::class, 'created_by');
+
+    }
+
+    public function loanSchedule(): BelongsTo{
+        
+        return $this->belongsTo(LoanSchedule::class,'loan_schedule_id');
 
     }
 
