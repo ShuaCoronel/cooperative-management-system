@@ -2,6 +2,7 @@
 
 use App\Enums\UserRole;
 use App\Http\Controllers\Admin\LoanController;
+use App\Http\Controllers\Admin\LoanPaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\SavingsTransactionController;
 use App\Http\Controllers\Admin\ShareCapitalTransactionController;
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
+
+
 
 // with login session
 Route::get('/dashboard', function () {
@@ -44,8 +50,15 @@ Route::middleware('auth')->group(function () {
 
 
 
+
+
+
+
 // admin only Financial operation
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function() {
+
+
+
 
     //Share capital transactions  check controller/ShareCapitalTransaction
     Route::post('/members/{member:member_id_number}/share-capital', [ShareCapitalTransactionController::class, 'store'])
@@ -60,6 +73,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function() {
     Route::post('/members/{member_id_number}/loans', [LoanController::class, 'store'])
     ->name('loans.store');
 
+
+    //Loan Payment Engine Routes
+    Route::get('/loan-payments', [LoanPaymentController::class, 'index'])->name('loan-payments.index');
+    Route::get('/loan-payments/create', [LoanPaymentController::class, 'create'])->name('loan-payment.create');
+    Route::post('/loan-payments/store', [LoanPaymentController::class. 'store'])->name('loan-payments.store');
 
 
     }
