@@ -76,8 +76,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function() {
 
     //Loan Payment Engine Routes
     Route::get('/loan-payments', [LoanPaymentController::class, 'index'])->name('loan-payments.index');
-    Route::get('/loan-payments/create', [LoanPaymentController::class, 'create'])->name('loan-payment.create');
-    Route::post('/loan-payments/store', [LoanPaymentController::class. 'store'])->name('loan-payments.store');
+    Route::get('/loan-payments/create', [LoanPaymentController::class, 'create'])->name('loan-payments.create');
+    Route::post('/loan-payments/store', [LoanPaymentController::class, 'store'])->name('loan-payments.store');
 
 
     }

@@ -32,7 +32,7 @@ return new class extends Migration
             $table->date('date_joined');
 
             $table->enum('membership_status', ['active','inactive','resigned','deceased']);
-            $table->enum('membership_type', ['regualar','associate']);
+            $table->enum('membership_type', ['regular','associate']);
 
             //soft deletes for later retrieval or marked as deleted data
             $table->softDeletes();
