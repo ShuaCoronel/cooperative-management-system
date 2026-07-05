@@ -40,7 +40,7 @@
                 <form action="{{ route('admin.loan-payments.create') }}" method="get">
                     <div class=""> 
                         {{-- max-w-xl this adjust the div box placement --}}
-                        <x-input-label for="loan_id" value="Active Loans" class="text-center" />
+                        <x-input-label for="loan_id" value="Active Loans" class="text-center mb-4" />
                         <select name="loan_id" id="loan_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" onchange="this.form.submit()">
                             <option class="text-center" value="">-- Select a Loan Account --</option>
                             @foreach($loans as $loan)
@@ -64,7 +64,7 @@
                 </form>
             </div>      
 
-            @if($selectedLoan)
+            {{-- @if($selectedLoan) --}}
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <header class="mb-6">
                         <h2 class="text-lg font-medium text-gray-900">Step 2: Enter Payment Details</h2>
@@ -72,25 +72,26 @@
                             The system will automatically allocate this payment to interest first, then principal, based on the oldest unpaid schedules.
                         </p>
                     </header>
-
+                    
+                    
                     <form method="POST" action="{{ route('admin.loan-payments.store') }}" class="space-y-6">
                         @csrf
-                        <input type="hidden" name="loan_id" value="{{ $selectedLoan->id }}">
+                        <input type="hidden" name="loan_id" value="{{ $selectedLoan->id ?? '' }}">
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <x-input-label for="amount_paid" value="Payment Amount (₱)" />
-                                <x-text-input id="amount_paid" name="amount_paid" type="number" step="0.01" min="0.01" class="mt-1 block w-full" :value="old('amount_paid')" required autofocus />
+                                <x-text-input id="amount_paid" name="amount_paid" type="number" step="0.01" min="0.01" class="mt-1 block w-full" :value="old('amount_paid')" required :disabled="!$selectedLoan" autofocus />
                             </div>
 
                             <div>
                                 <x-input-label for="payment_date" value="Payment Date" />
-                                <x-text-input id="payment_date" name="payment_date" type="date" class="mt-1 block w-full" :value="old('payment_date', now()->toDateString())" required />
+                                <x-text-input :disabled="!$selectedLoan" id="payment_date" name="payment_date" type="date" class="mt-1 block w-full" :value="old('payment_date', now()->toDateString())" required />
                             </div>
 
                             <div>
                                 <x-input-label for="payment_method" value="Payment Method" />
-                                <select id="payment_method" name="payment_method" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                                <select @disabled(!$selectedLoan) id="payment_method" name="payment_method" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                     <option value="cash" {{ old('payment_method') == 'cash' ? 'selected' : '' }}>Cash</option>
                                     <option value="bank_transfer" {{ old('payment_method') == 'bank_transfer' ? 'selected' : '' }}>Bank Transfer</option>
                                     <option value="check" {{ old('payment_method') == 'check' ? 'selected' : '' }}>Check</option>
@@ -99,38 +100,83 @@
 
                             <div>
                                 <x-input-label for="reference_number" value="Reference/Check Number (Optional)" />
-                                <x-text-input id="reference_number" name="reference_number" type="text" class="mt-1 block w-full" :value="old('reference_number')" />
+                                <x-text-input :disabled="!$selectedLoan" id="reference_number" name="reference_number" type="text" class="mt-1 block w-full" :value="old('reference_number')" />
                             </div>
                         </div>
 
                         <div>
                             <x-input-label for="remarks" value="Remarks (Optional)" />
-                            <textarea id="remarks" name="remarks" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('remarks') }}</textarea>
+                            <textarea @disabled(!$selectedLoan) placeholder="Enter Notes" id="remarks" name="remarks" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('remarks') }}</textarea>
                         </div>
 
-                        <div class="mt-6 bg-gray-50 p-4 rounded-md border border-gray-200">
-                            <h3 class="text-sm font-semibold text-gray-700 mb-2">Pending Amortization Target(s)</h3>
-                            <ul class="text-xs text-gray-600 space-y-1">
-                                @forelse($pendingSchedules as $schedule)
-                                    <li>
-                                        Period {{ $schedule->period_number }} (Due: {{ \Carbon\Carbon::parse($schedule->due_date)->format('M d, Y') }}) 
-                                        - Principal: ₱{{ number_format($schedule->principal_due, 2) }}, 
-                                        Interest: ₱{{ number_format($schedule->interest_due, 2) }}
-                                    </li>
-                                @empty
-                                    <li class="text-green-600 font-semibold">No pending schedules found. This payment will apply as advance principal.</li>
-                                @endforelse
-                            </ul>
+                        @if($selectedLoan)
+                        <div class="flex justify-between">
+                            <div class="mt-6 w-1/2 mx-7 bg-gray-50 p-4 rounded-md border border-gray-200">
+                                <h3 class="text-sm font-semibold text-gray-700 mb-2">Pending Amortization Target(s)</h3>
+                                <ul class="text-xs text-gray-600 space-y-1">
+                                    @forelse($pendingSchedules as $schedule)
+                                        <li>
+                                            Period {{ $schedule->period_number }} (Due: {{ \Carbon\Carbon::parse($schedule->due_date)->format('M d, Y') }}) 
+                                            - Principal: ₱{{ number_format($schedule->principal_due, 2) }}, 
+                                            Interest: ₱{{ number_format($schedule->interest_due, 2) }}
+                                        </li>
+                                    @empty
+                                        <li class="text-green-600 font-semibold">No pending schedules found. This payment will apply as advance principal.</li>
+                                    @endforelse
+                                </ul>
+                            </div>
+
+                            <div class="flex w-1/2"> 
+                                <div class="mt-6 w-1/2 bg-gray-50 p-4 rounded-md border border-gray-200 mx-3">
+                                    <h3 class="text-sm font-semibold text-gray-700 mb-2">Total Paid</h3>
+                                    <ul class="text-xs text-gray-600 space-y-1">
+                                        <li><span class="font-semibold">Amount Paid: &nbsp;</span> {{ number_format($selectedLoan->loanPayments()->sum('amount_paid'),2)  }} </li>
+                                        <li><span class="font-semibold">Principal Paid: &nbsp;</span> {{ number_format($selectedLoan->loanPayments()->sum('principal_paid'),2)  }} </li>
+                                        <li><span class="font-semibold">Interest Paid: &nbsp;</span> {{ number_format($selectedLoan->loanPayments()->sum('interest_paid'),2)  }} </li>
+
+                                    </ul> 
+
+                                </div>
+
+
+                                <div class="mt-6 w-1/2 bg-gray-50 p-4 rounded-md border border-gray-200 mx-3">
+                                    <h3 class="text-sm font-semibold text-gray-700 mb-2"> Remaining Balance </h3>
+                                    <ul class="text-xs text-gray-600 space-y-1">
+
+                                        <li> Initial Total Need to Pay: Php {{ number_format($selectedLoan->loanSchedules()->sum('total_due'),2)}}</li>
+                                        <li> Total Interest: Php {{ number_format($selectedLoan->loanSchedules()->sum('interest_due'),2)}}</li>
+                                        <li> Total Principal: Php {{ number_format($selectedLoan->loanSchedules()->sum('principal_due'),2) }}</li>
+                                        <li> Balance need to Pay: {{ number_format(($RemainingBalance),2) }} </li>
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+
                         </div>
+
+                        @else
+                        <div class="mt-6 bg-gray-50 p-4 rounded-md border border-gray-200">
+                            <h3 class="text-sm font-bold text-gray-700 mb-2 text-center">
+                                Select a member account above to view a payment schedule 
+                                {{-- <p class="text-center text-gray-500 text-s mt-3">select an account</p> --}}
+
+
+                            </h3>
+
+                        </div>
+
+                        @endif
 
                         <div class="flex items-center gap-4 mt-6">
-                            <x-primary-button type="submit" class="bg-green-600 hover:bg-green-700">
+                            <x-primary-button :disabled="!$selectedLoan" type="submit" class="bg-green-600 disabled:opacity-50 disabled:bg-gray-500 hover:bg-green-700">
                                 {{ __('Process Payment & Allocate') }}
                             </x-primary-button>
                         </div>
                     </form>
                 </div>
-            @endif
+            {{-- @endif --}}
 
         </div>
     </div>

@@ -30,6 +30,11 @@ class LoanPaymentController extends Controller
     }
 
 
+
+
+
+    
+
     // * Show the form for creating a new loan payment.
     public function create(Request $request) {
         
@@ -42,18 +47,38 @@ class LoanPaymentController extends Controller
         $selectedLoan = null;
         $pendingSchedules=[];
 
+        // variable to grab the remaining balance
+        $totalAmountPaid = 0.00;
+        $RemainingBalance = 0.00;
+
         if($request->filled('loan_id')) {
-            $selectedLoan = Loan::with(['member','loanSchedules' => function ($q){
+            $selectedLoan = Loan::with(['member','loanPayments','loanSchedules' => function ($q){
                 $q->where('status','!=','paid')->orderBy('period_number','asc');
-
-
             }])->findOrFail($request->loan_id);
 
             $pendingSchedules = $selectedLoan->loanSchedules;
 
+
+            // specifically created to grab the remaining balance only 
+            $totalExpectedInterest = $selectedLoan->loanSchedules()->sum('interest_due');
+            $totalExpectedPrincipal = $selectedLoan->loanSchedules()->sum('principal_due');
+            $totalGroupedBalance = $totalExpectedInterest + $totalExpectedPrincipal;
+
+
+            $totalAmountPaid = $selectedLoan->loanPayments()->sum('amount_paid');
+            $RemainingBalance = max(0.00, (float) $totalGroupedBalance - (float) $totalAmountPaid );
+            
+
+            
         }
-        return view('admin.loan-payments.create',compact('loans','selectedLoan','pendingSchedules'));
+        return view('admin.loan-payments.create',compact('loans','selectedLoan','pendingSchedules','totalAmountPaid','RemainingBalance'));
     }
+
+
+
+
+
+
 
     // * Store a newly created loan payment using Waterfall Allocation.
     // debt interest first to get paid then principal
