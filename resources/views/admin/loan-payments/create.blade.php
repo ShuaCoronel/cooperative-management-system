@@ -111,7 +111,7 @@
 
                         @if($selectedLoan)
                         <div class="flex justify-between">
-                            <div class="mt-6 w-1/2 mx-7 bg-gray-50 p-4 rounded-md border border-gray-200">
+                            <div class="mt-6 w-1/2 bg-gray-50 p-4 rounded-md border border-gray-200">
                                 <h3 class="text-sm font-semibold text-gray-700 mb-2">Pending Amortization Target(s)</h3>
                                 <ul class="text-xs text-gray-600 space-y-1">
                                     @forelse($pendingSchedules as $schedule)
@@ -126,27 +126,28 @@
                                 </ul>
                             </div>
 
-                            <div class="flex w-1/2"> 
-                                <div class="mt-6 w-1/2 bg-gray-50 p-4 rounded-md border border-gray-200 mx-3">
+                            <div class="flex w-1/2 mx-5 justify-between"> 
+                                <div class="mt-6 w-1/2 bg-gray-50 p-4 rounded-md border border-gray-200 mx-2">
                                     <h3 class="text-sm font-semibold text-gray-700 mb-2">Total Paid</h3>
                                     <ul class="text-xs text-gray-600 space-y-1">
-                                        <li><span class="font-semibold">Amount Paid: &nbsp;</span> {{ number_format($selectedLoan->loanPayments()->sum('amount_paid'),2)  }} </li>
-                                        <li><span class="font-semibold">Principal Paid: &nbsp;</span> {{ number_format($selectedLoan->loanPayments()->sum('principal_paid'),2)  }} </li>
-                                        <li><span class="font-semibold">Interest Paid: &nbsp;</span> {{ number_format($selectedLoan->loanPayments()->sum('interest_paid'),2)  }} </li>
+                                        <li><span class="font-semibold">Total Amount Paid: &nbsp;</span> {{ number_format($selectedLoan->loanPayments->sum('amount_paid'),2)  }} </li>
+                                        <li><span class="font-semibold">Total Principal Paid: &nbsp;</span> {{ number_format($selectedLoan->loanPayments->sum('principal_paid'),2)  }} </li>
+                                        <li><span class="font-semibold">Total Interest Paid: &nbsp;</span> {{ number_format($selectedLoan->loanPayments->sum('interest_paid'),2)  }} </li>
 
                                     </ul> 
 
                                 </div>
 
 
-                                <div class="mt-6 w-1/2 bg-gray-50 p-4 rounded-md border border-gray-200 mx-3">
+                                <div class="mt-6 w-1/2 bg-gray-50 p-4 rounded-md border border-gray-200 mx-2">
                                     <h3 class="text-sm font-semibold text-gray-700 mb-2"> Remaining Balance </h3>
                                     <ul class="text-xs text-gray-600 space-y-1">
 
-                                        <li> Initial Total Need to Pay: Php {{ number_format($selectedLoan->loanSchedules()->sum('total_due'),2)}}</li>
-                                        <li> Total Interest: Php {{ number_format($selectedLoan->loanSchedules()->sum('interest_due'),2)}}</li>
-                                        <li> Total Principal: Php {{ number_format($selectedLoan->loanSchedules()->sum('principal_due'),2) }}</li>
-                                        <li> Balance need to Pay: {{ number_format(($RemainingBalance),2) }} </li>
+                                        <li> <span class="font-semibold">Initial Total Need to Pay:</span> Php {{ number_format($selectedLoan->loanSchedules->sum('principal_due'),2)}}</li>
+                                        
+                                        <li> <span class="font-semibold">Total Principal:</span> Php {{ number_format($selectedLoan->loanSchedules->sum('principal_due'),2) }}</li>
+                                        <li> <span class="font-semibold">Total Interest: </span> Php {{ number_format($selectedLoan->loanSchedules->sum('interest_due'),2)}}</li>
+                                        <li> <span class="text-red-600 font-semibold">Balance need to Pay:</span> {{ number_format(($selectedLoan->remainingBalance),2) }} </li>
                                     </ul>
 
                                 </div>

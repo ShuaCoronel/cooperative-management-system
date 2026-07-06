@@ -8,6 +8,7 @@ use App\Models\LoanComaker;
 use App\Models\LoanProduct;
 use App\Models\Member;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -92,5 +93,30 @@ class Loan extends Model
         return $this->hasMany(LoanPayment::class, 'loan_id');
         
     }
+
+
+
+
+
+    // Calculate Remaining balance need to pay, an accessor
+    // a virtual column that is non static and calculates dynamically
+    protected function remainingBalance(): Attribute{
+
+        return Attribute::make(
+            
+            get: function() {
+
+                $totalExpected = (float) $this->loanSchedules->sum('principal_due') 
+                           + (float) $this->loanSchedules->sum('interest_due');
+                           
+                $totalPaid = (float) $this->loanPayments->sum('amount_paid');
+
+                return max(0.00, $totalExpected - $totalPaid);
+
+            }
+        );
+    }
+
+       
 
 }

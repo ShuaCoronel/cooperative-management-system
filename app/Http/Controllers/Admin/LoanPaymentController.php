@@ -47,9 +47,6 @@ class LoanPaymentController extends Controller
         $selectedLoan = null;
         $pendingSchedules=[];
 
-        // variable to grab the remaining balance
-        $totalAmountPaid = 0.00;
-        $RemainingBalance = 0.00;
 
         if($request->filled('loan_id')) {
             $selectedLoan = Loan::with(['member','loanPayments','loanSchedules' => function ($q){
@@ -58,20 +55,11 @@ class LoanPaymentController extends Controller
 
             $pendingSchedules = $selectedLoan->loanSchedules;
 
-
-            // specifically created to grab the remaining balance only 
-            $totalExpectedInterest = $selectedLoan->loanSchedules()->sum('interest_due');
-            $totalExpectedPrincipal = $selectedLoan->loanSchedules()->sum('principal_due');
-            $totalGroupedBalance = $totalExpectedInterest + $totalExpectedPrincipal;
-
-
-            $totalAmountPaid = $selectedLoan->loanPayments()->sum('amount_paid');
-            $RemainingBalance = max(0.00, (float) $totalGroupedBalance - (float) $totalAmountPaid );
             
 
             
         }
-        return view('admin.loan-payments.create',compact('loans','selectedLoan','pendingSchedules','totalAmountPaid','RemainingBalance'));
+        return view('admin.loan-payments.create',compact('loans','selectedLoan','pendingSchedules'));
     }
 
 
