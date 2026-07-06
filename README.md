@@ -1,66 +1,85 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Cooperative Management System (CMS)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A single tenant web product, production-ready, highly secure, and audit-compliant Cooperative Management System built with Laravel 11. This system manages member registrations, share capital, savings accounts, and complex loan amortization schedules.
 
-## About Laravel
+## 🚀 Project Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Financial applications require absolute data integrity. This system was built using **Domain-Driven Design (DDD)** principles, focusing on immutable financial ledgering and strict architectural constraints to prevent data drift and race conditions.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Core Architectural Rules Enforced:
+* **Dynamic Computation:** Balances (e.g., remaining loan balances, total savings) are NEVER stored as static database columns. They are calculated dynamically on-the-fly via Eloquent summations to guarantee the UI always matches the immutable ledger.
+* **Concurrency Protection:** Database transactions utilize Pessimistic Locking (`lockForUpdate()`) to prevent race conditions during concurrent financial operations.
+* **Immutable Audit Ledger:** Every state change in the financial tables is tracked via a `MemberAuditLog`, capturing the exact state before and after the transaction, alongside the ID of the authorizing user.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Key Features
 
-## Learning Laravel
+* **Role-Based Access Control:** Strict separation between Administrative Staff (financial processors) and Cooperative Members.
+* **Share Capital & Savings Ledger:** Tracks deposits, withdrawals, and minimum maintaining balances.
+* **Advanced Loan Processing Engine:**
+  * Automated Amortization Schedule generation.
+  * **Waterfall Payment Allocation:** A custom payment engine that automatically cascades incoming cash to satisfy outstanding interest first, then principal, based on the oldest pending periods.
+  * Handles advance principal overflow seamlessly.
+* **Data Privacy:** Uses secure string identifiers (`member_id_number`) for URL routing to prevent database ID enumeration.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 💻 Tech Stack
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+* **Framework:** Laravel 11 (PHP 8.2+)
+* **Frontend:** Tailwind CSS, Laravel Breeze (Blade Components)
+* **Database:** MySQL
+* **Asset Bundling:** Vite
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠️ Installation & Setup
 
-## Laravel Sponsors
+To run this project locally, follow these steps:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git](https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git)
+   cd YOUR_REPOSITORY_NAME
+   ```
 
-### Premium Partners
+2. **Install PHP dependencies:**
+   ```bash
+   composer install
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+3. **Set up your environment:**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   *(Ensure you configure your database connection settings in the `.env` file).*
 
-## Contributing
+4. **Run migrations and seeders:**
+   ```bash
+   php artisan migrate --seed
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5. **Install and compile frontend assets:**
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-## Code of Conduct
+6. **Serve the application:**
+   ```bash
+   php artisan serve
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📐 Database Entity Relationship (ERD) Highlights
 
-## Security Vulnerabilities
+```mermaid
+erDiagram
+    USERS ||--|| MEMBERS : "1:1 Profile & KYC"
+    MEMBERS ||--o{ SAVINGS_ACCOUNTS : "1:M"
+    MEMBERS ||--o{ SHARE_CAPITALS : "1:M"
+    MEMBERS ||--o{ LOANS : "1:M"
+    LOANS ||--o{ LOAN_SCHEDULES : "1:M Amortization periods"
+    LOANS ||--o{ LOAN_PAYMENTS : "1:M Immutable ledger"
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+## ⚠️ Current Status: Under Active Development
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Please Note:** This project is currently **ongoing and in active development**. While the core domain rules, structural architecture, and ledger foundations are established, several modules, UI layouts, and auxiliary features are unfinished or undergoing heavy iteration. Expect frequent changes to the database schemas and internal APIs until the initial release build is tagged.
+```
