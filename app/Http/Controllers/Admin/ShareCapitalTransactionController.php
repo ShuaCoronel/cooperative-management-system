@@ -36,19 +36,25 @@ class ShareCapitalTransactionController extends Controller
             $type = TransactionType::from($validated['type']);
 
             if ($type === TransactionType::WITHDRAWAL) {
-                $deposit = $member->shareCapitalTransactions()
-                ->where('type', TransactionType::DEPOSIT)
-                ->sum('amount');
+               
+            
+            
+                // $deposit = $member->shareCapitalTransactions()
+                // ->where('type', TransactionType::DEPOSIT)
+                // ->sum('amount');
 
                 
 
-                $withdrawals = $member->shareCapitalTransactions()
-                ->where('type', TransactionType::WITHDRAWAL)
-                ->sum('amount');
+                // $withdrawals = $member->shareCapitalTransactions()
+                // ->where('type', TransactionType::WITHDRAWAL)
+                // ->sum('amount');
+
+                // depoosits and withdrawal variable not needed
+                // balance already calculated using accessor in the member model
 
 
-
-                $balance = (float) $deposit - (float) $withdrawals;
+                // check accessor shareCapitalBalance in member model
+                $balance = (float) $member->shareCapitalBalance;
 
                 
                 if ($validated['amount'] > $balance) {

@@ -27,13 +27,13 @@ class DatabaseSeeder extends Seeder
 
         Member::create([
         'member_id_number' => 'MEMBER-2026-00001',
-        'full_name' => 'Coronel, Joshua S',
-        'date_of_birth' => '1999-08-17',
+        'full_name' => 'John Doe',
+        'date_of_birth' => '1111-01-1',
         'sex' => 'male',
         'civil_status' => 'single',
         'nationality' => 'filipino',
-        'home_address' => '1597 Saudi St. Malabanias Angeles City',
-        'mobile_number' => '09550473032',
+        'home_address' => '17 sulasok st.',
+        'mobile_number' => '123456789',
         'email' => 'membertest@gmail.com',
         'valid_id_type' => 'Drivers License',
         'valid_id_number' => '081799',

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -113,6 +113,34 @@ class Member extends Model
 
         return $this->hasMany(DividendAllocation::class,'member_id');
         
+    }
+
+
+
+    // Accessor for sharecapital transaction summation balance of
+    //total transaction, dynamic data that never stored for virtual computation
+    // and easy grab anywhere using ORM
+
+    protected function shareCapitalBalance(): Attribute {
+
+        return Attribute::make(
+
+            get: function () {
+
+                $transactions = $this->shareCapitalTransactions;
+
+                $deposits = $transactions->where('type','deposit')->sum('amount');
+                $withdrawals = $transactions->where('type','withdrawal')->sum('amount');
+
+                // max avoid negative, ceiling 0.00
+                return max(0.00,($deposits - $withdrawals));
+
+            }
+
+        );
+
+
+
     }
 
         

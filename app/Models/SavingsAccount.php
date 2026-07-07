@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -35,6 +37,23 @@ class SavingsAccount extends Model
 
     }
 
+
+
+  protected function balance(): Attribute {
+
+    return Attribute::make(
+
+        get: function() {
+
+            // $deposits = $this->transactions()->where('type','deposit')->sum('amount');
+
+
+
+        }
+    );
+
+
+  }
     
 
 
