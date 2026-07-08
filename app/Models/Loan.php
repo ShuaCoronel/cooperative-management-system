@@ -34,7 +34,8 @@ class Loan extends Model
     ];
 
 
-    protected function cast(): array {
+    // >>> [FIXED] Method name was 'cast()' (singular) — Laravel expects 'casts()' (plural). Without this, all enum/decimal casts failed silently.
+    protected function casts(): array {
         
         return [
 

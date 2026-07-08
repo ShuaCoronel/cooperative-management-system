@@ -39,15 +39,18 @@ class SavingsAccount extends Model
 
 
 
+    // note cline fixed
+  // >>> [FIXED] Balance accessor was fully commented out / broken. Now computes actual balance from transactions.
   protected function balance(): Attribute {
 
     return Attribute::make(
 
         get: function() {
 
-            // $deposits = $this->transactions()->where('type','deposit')->sum('amount');
+            $deposits = (float) $this->transactions()->where('type','deposit')->sum('amount');
+            $withdrawals = (float) $this->transactions()->where('type','withdrawal')->sum('amount');
 
-
+            return max(0.00, $deposits - $withdrawals);
 
         }
     );

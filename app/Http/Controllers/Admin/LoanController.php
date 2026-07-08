@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Loans\RatePeriod;
 use App\Http\Controllers\Controller;
 use App\Models\Loan;
 use App\Models\LoanProduct;
@@ -18,7 +19,8 @@ class LoanController extends Controller
 {
     //
 
-    public function store(Request $request, string $member_id_number ): RedirectResponse {
+    // >>> [FIXED] Changed parameter from string $member_id_number to Member $member for route model binding
+    public function store(Request $request, Member $member ): RedirectResponse {
 
         $validated = $request->validate([
         'loan_product_id'       => ['required','exists:loan_products,id'],
@@ -30,9 +32,6 @@ class LoanController extends Controller
 
 
         ]);
-
-
-        $member = Member::where('member_id_number', $member_id_number)->firstOrFail();
 
 
         $product = LoanProduct::where('id', $validated['loan_product_id'])
@@ -93,18 +92,25 @@ class LoanController extends Controller
 
     protected function generateSchedule(Loan $loan): void {
 
+        // guard clause to ensure term_months is positive to avoid division by zero or negative schedule generation
+        if ($loan->term_months <= 0) {
+        throw new \InvalidArgumentException("Loan term must be at least 1 month to generate an amortization schedule.");
+    }
+
+    
         $principal   =   $loan->principal_amount;
         $rate               =   $loan->interest_rate / 100;
         $months             =   $loan->term_months;
         $currentDate        =   Carbon::parse($loan->release_date);
 
-        // standardize monthly rate
-        $monthlyRate = $loan->rate_period === 'annual' ? $rate /12: $rate;
+        // >>> [FIXED] Was comparing string 'annual' to RatePeriod enum. Now uses enum value comparison.
+        $monthlyRate = $loan->rate_period === RatePeriod::ANNUAL ? $rate /12: $rate;
 
         $schedules = []; 
         $balance = $principal;
 
-        if ($loan->interest_method === 'flat') {
+        // >>> [FIXED] Was comparing string 'flat' to InterestMethod enum. Now uses enum value comparison.
+        if ($loan->interest_method === \App\Enums\Loans\InterestMethod::FLAT) {
             $monthlyPrincipal   = $principal  / $months;
             $monthlyInterest    = $principal * $monthlyRate;
             $totalMonthly       = $monthlyPrincipal + $monthlyInterest;

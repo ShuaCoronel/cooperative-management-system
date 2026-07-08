@@ -54,8 +54,9 @@ Route::middleware('auth')->group(function () {
 
 
 
-// admin only Financial operation
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function() {
+// >>> [FIXED] Added 'admin' middleware to protect admin-only financial routes from unauthorized access
+// check app/bootstrap for admin middleware alias
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function() {
 
 
 
@@ -69,8 +70,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function() {
     Route::post('/savings-accounts/{savingsAccount:account_number}/transactions',[SavingsTransactionController::class,'store'])
     ->name('savings.store');
 
-    // Loan Transactions
-    Route::post('/members/{member_id_number}/loans', [LoanController::class, 'store'])
+    // >>> [FIXED] Changed {member_id_number} to {member:member_id_number} for proper route model binding
+    Route::post('/members/{member:member_id_number}/loans', [LoanController::class, 'store'])
     ->name('loans.store');
 
 

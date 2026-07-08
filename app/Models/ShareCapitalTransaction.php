@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\ShareCapital\TransactionType;
+// >>> [FIXED] Wrong namespace: was App\Enums\ShareCapital\TransactionType (singular - doesn't exist)
+use App\Enums\ShareCapitalTransactions\TransactionType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
