@@ -23,6 +23,9 @@ return new class extends Migration
 
 
             $table->timestamps();
+
+            // added for back tracking need for review
+            $table->softDeletes();
         });
     }
 

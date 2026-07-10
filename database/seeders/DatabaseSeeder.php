@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Enums\UserRole;
 use App\Models\Member;
+use App\Models\SavingsAccount;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,7 +27,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        Member::create([
+        $john = User::create([
+        'name' => 'John Doe',
+        'email' => 'member_test@gmail.com',
+        'password' => Hash::make('member123'),
+        'role' => UserRole::MEMBER,
+
+        ]);
+
+
+        $johm_member = Member::create([  
+        'user_id' => $john->id,
         'member_id_number' => 'MEMBER-2026-00001',
         'full_name' => 'John Doe',
         'date_of_birth' => '1111-01-1',
@@ -34,7 +46,7 @@ class DatabaseSeeder extends Seeder
         'nationality' => 'filipino',
         'home_address' => '17 sulasok st.',
         'mobile_number' => '123456789',
-        'email' => 'membertest@gmail.com',
+        'email' => 'member_test@gmail.com',
         'valid_id_type' => 'Drivers License',
         'valid_id_number' => '081799',
         'tin' => '123-425-789',
@@ -42,6 +54,18 @@ class DatabaseSeeder extends Seeder
         'membership_status' => 'active',
         'date_joined' => '2026-6-12',
 
+
+
+        ]);
+
+
+
+        SavingsAccount::create([
+            'member_id' => $johm_member->id,
+            'account_number'    => '123-456-789',
+            'product_type'      => 'regular',
+            'status'            => 'active',
+            'opened_at'         => Carbon::parse('2025-8-17')
 
 
         ]);

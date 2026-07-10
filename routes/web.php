@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\LoanPaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\SavingsTransactionController;
 use App\Http\Controllers\Admin\ShareCapitalTransactionController;
+use App\Http\Controllers\member\DashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,25 +20,25 @@ Route::get('/', function () {
 
 
 
-
 // with login session
 Route::get('/dashboard', function () {
-    // initialize user variable using Auth class user() function
+
+    // initialize user variable but grabing session Auth::user() inject in $user
     $user = Auth::user();
 
     // validate user data role and return respective dashboard for its role
     if ($user->role === UserRole::ADMIN) {
         return view('admin.dashboard', ['user'=>$user]);
-
     }
 
     // if not go to member.dashboard
-    return view('member.dashboard', [
-    // 'user' pair to $user variable and 'member' check the $user variable member data
-    'user' => $user,
-    'member' => $user->member
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard'); //middleware calls the auth and verify middleware func, name() function for dashboard nickname
+    return redirect()->route('member.dashboard');
+    
+    })->middleware(['auth','verified'])->name('dashboard');
+    //middleware calls the auth and verify middleware func, name() function for dashboard nickname
+
+
+
 
 
 
@@ -54,11 +55,22 @@ Route::middleware('auth')->group(function () {
 
 
 
+
+// Grouped member route wrapped in member middleware, added a customized 'member' middleware in bootstrap
+Route::middleware(['auth','member'])->prefix('member')->name('member.')->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+});
+
+
+
+
+
+
 // >>> [FIXED] Added 'admin' middleware to protect admin-only financial routes from unauthorized access
 // check app/bootstrap for admin middleware alias
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function() {
-
-
 
 
     //Share capital transactions  check controller/ShareCapitalTransaction

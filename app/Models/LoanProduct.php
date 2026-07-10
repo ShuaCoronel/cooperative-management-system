@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Loans\InterestMethod;
 use App\Enums\Loans\RatePeriod;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LoanProduct extends Model
 {
@@ -25,7 +26,7 @@ class LoanProduct extends Model
 
         return [
             'default_rate' => 'decimal:2',
-            'max_term_months' => 'decimal:2',
+            'max_term_months' => 'integer',
             'is_active' => 'boolean',
 
             //appEnums link
@@ -35,6 +36,12 @@ class LoanProduct extends Model
         ];
 
 
+
+    }
+
+    public function loans(): HasMany {
+
+        return $this->hasMany(Loan::class);
 
     }
 

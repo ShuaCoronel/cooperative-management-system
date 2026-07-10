@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Loans\InterestMethod;
 use App\Enums\Loans\RatePeriod;
 use App\Http\Controllers\Controller;
 use App\Models\Loan;
@@ -110,7 +111,7 @@ class LoanController extends Controller
         $balance = $principal;
 
         // >>> [FIXED] Was comparing string 'flat' to InterestMethod enum. Now uses enum value comparison.
-        if ($loan->interest_method === \App\Enums\Loans\InterestMethod::FLAT) {
+        if ($loan->interest_method === InterestMethod::FLAT) {
             $monthlyPrincipal   = $principal  / $months;
             $monthlyInterest    = $principal * $monthlyRate;
             $totalMonthly       = $monthlyPrincipal + $monthlyInterest;

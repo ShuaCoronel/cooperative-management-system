@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -86,17 +85,16 @@ class Member extends Model
 
 
 
+
+
+
+
     public function user() {
 
     return $this->belongsTo(User::class, 'user_id');
 
     }
 
-    public function savingsTransactions() {
-
-        return $this->hasMany(SavingsTransaction::class);
-
-    }
 
     public function savingsAccounts() {
 
@@ -109,11 +107,29 @@ class Member extends Model
     }
 
 
-    public function dividendAllocation() : HasMany {
+    public function dividendAllocations() : HasMany {
 
         return $this->hasMany(DividendAllocation::class,'member_id');
         
     }
+
+
+
+    public function loans(): HasMany {
+
+        return $this->hasMany(Loan::class);
+
+
+    }
+
+
+    public function loanComakers(): HasMany {
+
+        return $this->hasMany(LoanComaker::class);
+
+    }
+
+  
 
 
 

@@ -21,3 +21,5 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+## ignore cline instrution to ignore file load check everytime
+.clineignore

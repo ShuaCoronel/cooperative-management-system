@@ -18,10 +18,18 @@ class SavingsAccount extends Model
 
     'member_id',
     'account_number',
-    'account_type',
-    'status'
+    'product_type',
+    'status',
+    'opened_at',
+    
 
     ];
+
+   protected $casts = [
+
+    'opened_at' => 'date',
+
+   ];   
 
 
     public function member(): BelongsTo {
@@ -50,7 +58,7 @@ class SavingsAccount extends Model
             $deposits = (float) $this->transactions()->where('type','deposit')->sum('amount');
             $withdrawals = (float) $this->transactions()->where('type','withdrawal')->sum('amount');
 
-            return max(0.00, $deposits - $withdrawals);
+            return $deposits - $withdrawals;
 
         }
     );
