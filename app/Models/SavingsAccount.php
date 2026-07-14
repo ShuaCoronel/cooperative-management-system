@@ -58,7 +58,7 @@ class SavingsAccount extends Model
             $deposits = (float) $this->transactions()->where('type','deposit')->sum('amount');
             $withdrawals = (float) $this->transactions()->where('type','withdrawal')->sum('amount');
 
-            return $deposits - $withdrawals;
+            return number_format($deposits - $withdrawals,2);
 
         }
     );
