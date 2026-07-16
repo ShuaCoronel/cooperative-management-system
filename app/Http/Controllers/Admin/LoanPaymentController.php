@@ -9,6 +9,7 @@ use App\Models\MemberAuditLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class LoanPaymentController extends Controller
 {
@@ -75,7 +76,7 @@ class LoanPaymentController extends Controller
         $validated = $request->validate([
             'loan_id'           => ['required','exists:loans,id'],
             'amount_paid'       => ['required', 'numeric', 'min:0.01'],
-            'payment_method'    => ['required', 'string'],
+            'payment_method'    => ['required', 'string',Rule::in(['cash','bank_transfer','check','gcash'])],
             'reference_number'  => ['nullable', 'string'],
             'payment_date'      => ['required', 'date'],
             'remarks'           => ['nullable', 'string'],
@@ -84,11 +85,19 @@ class LoanPaymentController extends Controller
 
         return DB::transaction( function () use ($validated){
 
-            $loan = Loan::with(['loanSchedules' => function ($q) {
-                $q->where('status', '!=', 'paid')
-                ->orderBy('due_date','asc')
-                ->orderBy('period_number', 'asc');
-        }])->lockForUpdate()->findOrFail($validated['loan_id']);
+        // 1. Lock the core loan row first to serialize concurrent requests
+        $loan = Loan::lockForUpdate()->findOrFail($validated['loan_id']);
+
+
+        // 2. Fetch, lock, and eager-load the pending schedules explicitly inside the transaction
+        $pendingSchedules = $loan->loanSchedules()
+            ->where('status', '!=', 'paid')
+            ->orderBy('due_date', 'asc')
+            ->orderBy('period_number', 'asc')
+            ->with('loanPayments') // Fix #4: Eager-load payments to prevent N+1
+            ->lockForUpdate()      // Fix #3: Lock the schedules to prevent race conditions
+            ->get();
+
 
 
         $oldLoanStatus = $loan->status;
@@ -96,15 +105,15 @@ class LoanPaymentController extends Controller
 
         $remainingCash = (float) $validated['amount_paid'];
 
-        foreach($loan->loanSchedules as $schedule) {
+        foreach($pendingSchedules as $schedule) {
 
             if ($remainingCash <= 0.00) {
                 break;
             }
 
             // Calculate running ledger for this specific schedule period
-            $interestPaidSoFar = (float) $schedule->loanPayments()->sum('interest_paid');
-            $principalPaidSoFar = (float) $schedule->loanPayments()->sum('principal_paid');
+            $interestPaidSoFar = (float) $schedule->loanPayments->sum('interest_paid');
+            $principalPaidSoFar = (float) $schedule->loanPayments->sum('principal_paid');
 
             $interestDue = (float)$schedule->interest_due;
             $principalDue = (float)$schedule->principal_due;
@@ -205,7 +214,7 @@ class LoanPaymentController extends Controller
                     'status' => $loan->status,
                     'principal_paid_balance' => $newTotalPrincipalPaid,
                     'transaction_amount_paid' => (float) $validated['amount_paid'],
-                    'interest_method' => $loan->interest_method,
+                    'interest_method' => $loan->interest_method->value,
                     'principal_amount' => (float) $loan->principal_amount,
                 ],
             ]);

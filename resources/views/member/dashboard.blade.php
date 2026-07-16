@@ -45,7 +45,8 @@
                         <div class="min-h-20 overflow-hidden shadow-sm sm:rounded-lg py-2 mt-1 relative">
                             <p class="text-xs">Account Number: {{ $account->account_number }}</p>
                             <p class="mt-2 text-3xl font-bold text-gray-900">₱ {{ $account->balance }}</p>
-                            
+                            <p class="mt-2 text-sm text-indigo-600 hover:text-indigo-900 cursor-pointer">View passbook &rarr;</p>
+
                         </div>
                     @empty
                         <p> Please open a savings account </p>
@@ -53,7 +54,7 @@
    
                     @endforelse
                     {{-- <p class="mt-2 text-3xl font-bold text-gray-900">₱0.00</p> --}}
-                    <p class="mt-2 text-sm text-indigo-600 hover:text-indigo-900 cursor-pointer">View passbook &rarr;</p>
+                    
                 </div>
 
 
@@ -69,14 +70,16 @@
                     
                     <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Active Loan Balance</h4>
                      
-                        @forelse ($activeLoans as $loan)
+                        @forelse ($member->loans->where('status','active') as $loan)
                             <div class="min-h-20 overflow-hidden shadow-sm sm:rounded-lg py-2 mt-1 relative">
                                 <p class="text-xs">Loan: {{ $loan->product->name }}</p>
                                 <p class="text-xs">Interest Method: {{ $loan->product->interest_method->value }}</p>
+                                <p class="text-xs">Interest Amount: {{ $loan->loanSchedules->sum('interest_due',2) }}</p>
                                 <p class="text-xs">Principal Amount: {{ $loan->principal_amount }}</p>
-                                <p class="text-xs">Interest: {{ $loan->principal_amount }}</p>
+                                <p class="text-xs">Remaining Principal: ₱{{ number_format($loan->remaining_balance, 2) }}</p>
+                                <p class="mt-2 text-3xl font-bold text-gray-900"><span class="text-xs">Payoff: </span>₱{{ number_format($loan->payoff_amount, 2) }}</p>
 
-                                <p class="mt-2 text-3xl font-bold text-gray-900"><span class="text-xs">Balance: </span>₱ {{ $loan->remaining_balance }}</p>
+             
                             
                             </div>
 

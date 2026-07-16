@@ -89,7 +89,7 @@ class Loan extends Model
 
     }
 
-    public function LoanPayments() : HasMany {
+    public function loanPayments() : HasMany {
 
         return $this->hasMany(LoanPayment::class, 'loan_id');
         
@@ -101,19 +101,49 @@ class Loan extends Model
 
     // Calculate Remaining balance need to pay, an accessor
     // a virtual column that is non static and calculates dynamically
-    protected function remainingBalance(): Attribute{
-
+   protected function remainingBalance(): Attribute{
         return Attribute::make(
-            
             get: function() {
+                // Bug #2 Fix: Performance short-circuit for closed loans
+                if ($this->status === 'fully_paid') {
+                    return 0.00;
+                }
 
-                $totalExpected = (float) $this->loanSchedules->sum('principal_due') 
-                           + (float) $this->loanSchedules->sum('interest_due');
-                           
-                $totalPaid = (float) $this->loanPayments->sum('amount_paid');
+                // Bug #1 Fix: Audit-compliant calculation that completely bypasses 
+                // any pre-filtered 'loanSchedules' collections to guarantee data integrity.
+                $originalPrincipal = (float) $this->principal_amount;
+                $principalPaid = (float) $this->loanPayments->sum('principal_paid');
+                
+                return $originalPrincipal - $principalPaid;
+            }
+        );
+    }
 
-                return max(0.00, $totalExpected - $totalPaid);
 
+
+
+
+    /**
+     * UI Accessor: Calculates total payoff obligation (Principal + Interest)
+     * Used exclusively for the Member Dashboard UX.
+     */
+    protected function payoffAmount(): Attribute {
+        return Attribute::make(
+            get: function() {
+                if ($this->status === 'fully_paid') {
+                    return 0.00;
+                }
+
+                // Total expected debt
+                $totalPrincipal = (float) $this->principal_amount;
+                $totalInterestExpected = (float) $this->loanSchedules->sum('interest_due');
+                
+                // Total actually paid towards debt
+                $principalPaid = (float) $this->loanPayments->sum('principal_paid');
+                $interestPaid = (float) $this->loanPayments->sum('interest_paid');
+
+                // Return the total remaining obligation (cannot go below 0)
+                return max(0.00, ($totalPrincipal + $totalInterestExpected) - ($principalPaid + $interestPaid));
             }
         );
     }

@@ -18,15 +18,15 @@ class DashboardController extends Controller
         'shareCapitalTransactions',
         'dividendAllocations',
         'loans' => function($query) {
-            $query->whereIn('status',['active','fully_paid'])->with('product');
+            $query->whereIn('status',['active','fully_paid'])->with('product','loanPayments','loanSchedules');
 
         }
         ])->firstOrFail();
 
     // temporary solution, option is to make custom link function in loan model using where to sort there the active and non active
-    $activeLoans= $member->loans->where('status','active');
+    // $activeLoans= $member->loans->where('status','active');
 
-    return view('member.dashboard', compact('member','activeLoans'));
+    return view('member.dashboard', compact('member'));
     }
 
 
