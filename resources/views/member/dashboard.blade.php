@@ -45,6 +45,7 @@
                         <div class="min-h-20 overflow-hidden shadow-sm sm:rounded-lg py-2 mt-1 relative">
                             <p class="text-xs">Account Number: {{ $account->account_number }}</p>
                             <p class="mt-2 text-3xl font-bold text-gray-900">₱ {{ $account->balance }}</p>
+                            <a href="{{ route('member.savings.show')}}"> show </a>
                             <p class="mt-2 text-sm text-indigo-600 hover:text-indigo-900 cursor-pointer">View passbook &rarr;</p>
 
                         </div>
