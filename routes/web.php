@@ -60,6 +60,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth','member'])->prefix('member')->name('member.')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
+    // testing new route manually need to delete
     Route::get('/savings/show', [DashboardController::class, 'show'])->name('savings.show');
 
 });

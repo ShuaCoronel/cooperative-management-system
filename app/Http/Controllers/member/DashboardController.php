@@ -31,6 +31,9 @@ class DashboardController extends Controller
 
 
 
+
+
+    // test for routing 
     public function show(): View {
 
     $member = Member::where('user_id', Auth::id())
