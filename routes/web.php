@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 // landing route get without login session
 Route::get('/', function () {
-    return view('welcome');
+    return view('hero');
 });
 
 
