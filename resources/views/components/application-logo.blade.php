@@ -6,7 +6,7 @@
 
 
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	  viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve" {{ $attributes }}>
+	  viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve" fill="currentColor" {{ $attributes }}>
 <g>
 	<path d="M20.2,8.8C20,9,19.8,9,19.6,9c-0.2-0.1-0.3-0.3-0.3-0.5V5.7c0-2.5-2.1-4.6-4.6-4.6H7.3c-2.5,0-4.6,2.1-4.6,4.6v3.5
 		c0,2.5,2.1,4.6,4.6,4.6h10.1c0.3,0,0.5,0.2,0.5,0.5s-0.2,0.5-0.5,0.5h-0.5v3.1c0,1.5-0.9,2.6-2.2,2.6H7.3c-1.2,0-2.2-1-2.2-2.2
