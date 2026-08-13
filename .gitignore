@@ -23,3 +23,6 @@ yarn-error.log
 /.zed
 ## ignore cline instrution to ignore file load check everytime
 .clineignore
+##ide helper
+_ide_helper*.php
+.phpstorm.meta.php
