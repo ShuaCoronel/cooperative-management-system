@@ -30,4 +30,25 @@ class DashboardController extends Controller
     }
 
 
+
+    public function show(): View {
+
+    $member = Member::where('user_id', Auth::id())
+    ->with([
+        'savingsAccounts.transactions',
+        'shareCapitalTransactions',
+        'dividendAllocations',
+        'loans' => function($query) {
+            $query->whereIn('status',['active','fully_paid'])->with('product','loanPayments','loanSchedules');
+
+        }
+        ])->firstOrFail();
+
+    // temporary solution, option is to make custom link function in loan model using where to sort there the active and non active
+    // $activeLoans= $member->loans->where('status','active');
+
+    return view('member.savings.show', compact('member'));
+    }
+
+
 }
