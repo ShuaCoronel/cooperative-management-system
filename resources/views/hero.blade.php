@@ -14,10 +14,8 @@
                             Contact
                         </a>
 
-
-
                         <x-primary-button class="!bg-blue-500">
-                            <a href="{{route('login')}}">Login</a>
+                            <a href="{{route('login')}}" wire:navigate>Login</a>
 
                         </x-primary-button>
                     </nav>
