@@ -1,40 +1,4 @@
-<<<<<<< HEAD
-<x-coopguest-layout>
-     <x-slot name="header">
-        <div class="flex flex-row px-[15%]">
-            
-                <div class="w-full flex justify-between gap-3">
-                    <nav>
-                        <x-application-logo class="h-10 text-red-600" />
-=======
-<<<<<<< Updated upstream
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
->>>>>>> hotfix
 
-                    </nav>
-
-
-                    <nav class="flex items-center gap-7">
-                        <a href="">
-                            Contact
-                        </a>
-
-                        <x-primary-button class="!bg-blue-500">
-                            <a href="{{route('login')}}" wire:navigate>Login</a>
-
-                        </x-primary-button>
-                    </nav>
-                </div>
-            
-            
-        </div>
-<<<<<<< HEAD
-    </x-slot>
-=======
-=======
 <x-coopguest-layout>
      <x-slot name="header">
         <nav x-data="{ open: false }" class="w-full">
@@ -87,8 +51,7 @@
             </div>
         </nav>
     </x-slot>
->>>>>>> Stashed changes
->>>>>>> hotfix
+
 
     <div>
         <p class="font-bold text-5xl text-center text-white"> 

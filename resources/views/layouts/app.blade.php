@@ -16,14 +16,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-<<<<<<< HEAD
-=======
             @include('layouts.navigation')
-<<<<<<< Updated upstream
->>>>>>> hotfix
-
-=======
->>>>>>> Stashed changes
             <!-- Page Heading -->
             @isset($header)
                 
