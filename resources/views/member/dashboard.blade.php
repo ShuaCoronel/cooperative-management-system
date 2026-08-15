@@ -1,9 +1,9 @@
 <x-app-layout>
-    <x-slot name="header">
+    {{-- <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('My Financial Dashboard') }}
         </h2>
-    </x-slot>
+    </x-slot> --}}
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -49,7 +49,7 @@
                             <!-- test need update dashboard -->
                             <!-- <a href="{{ route('member.savings.show')}}"> show </a> -->
 
-                            <a href="{{ route('member.savings.show') }}">
+                            <a href="{{ route('member.savings.show') }}" wire:navigate>
                                 <p class="mt-2 text-sm text-indigo-600 hover:text-indigo-900 cursor-pointer">View passbook &rarr;</p>
                             </a>
                         </div>
