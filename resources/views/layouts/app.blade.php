@@ -17,7 +17,10 @@
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
             <!-- Page Heading -->
             @isset($header)
                 

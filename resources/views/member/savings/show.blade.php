@@ -52,45 +52,48 @@
 
 
 <x-app-layout>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        {{-- Top Navigation & Header --}}
-        <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-                <a href="{{ route('member.dashboard') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center gap-1 mb-2 sm:mb-0">
-                    <button class="bg-blue-500">
-                        &larr; Back to Dashboard
-                    </button>
-                </a>
+    <div class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
-            </div>
+            {{-- Top Navigation & Header --}}
+            <a href="{{ route('member.dashboard') }}" wire:navigate
+               class="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-500 transition">
+                &larr; Back to Dashboard
+            </a>
+
+
+
+
+
+
+            {{-- Passbook Header --}}
+            <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">
+                        Passbook Ledger: <span class="font-mono">{{ $savingsAccount->account_number }}</span>
+                    </h1>
+                    <p class="text-sm text-gray-500 capitalize mt-1">
+                        Product: {{ str_replace('_', ' ', $savingsAccount->product_type instanceof \BackedEnum ? $savingsAccount->product_type->value : $savingsAccount->product_type) }} &bull;
+                        Opened on {{ \Carbon\Carbon::parse($savingsAccount->opened_at)->format('F d, Y') }}
+                    </p>
+
+                    <div class="bg-white p-4 rounded-lg shadow border border-gray-200 text-left sm:text-right md:shrink-0">
+                        <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Current Balance</span>
+                            <div class="text-2xl font-extrabold text-gray-900 mt-1">
+                        {{-- Note: This relies on the balance() accessor on the SavingsAccount Model --}}
+                            ₱{{ number_format($savingsAccount->balance, 2) }}
+                            </div>
+                            <div class="mt-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ ($savingsAccount->status instanceof \BackedEnum ? $savingsAccount->status->value : $savingsAccount->status) === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }} capitalize">
+                                    {{ $savingsAccount->status instanceof \BackedEnum ? $savingsAccount->status->value : $savingsAccount->status }}
+                                </span>
+                            </div>
+                    </div>
+
+                </div>
+
                 
-            
-
-            <div class="bg-white p-4 rounded-lg shadow border border-gray-200 text-left sm:text-right w-full sm:w-auto">
-                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Current Balance</span>
-                <div class="text-2xl font-extrabold text-gray-900 mt-1">
-                    {{-- Note: This relies on the balance() accessor on the SavingsAccount Model --}}
-                    ₱{{ number_format($savingsAccount->balance, 2) }}
-                </div>
-                <div class="mt-2">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ ($savingsAccount->status instanceof \BackedEnum ? $savingsAccount->status->value : $savingsAccount->status) === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }} capitalize">
-                        {{ $savingsAccount->status instanceof \BackedEnum ? $savingsAccount->status->value : $savingsAccount->status }}
-                    </span>
-                </div>
             </div>
-        </div>
-
-
-        <div class="mb-3 p-3">
-                <h1 class="mt-2 text-2xl font-bold text-gray-900">
-                    Passbook Ledger: {{ $savingsAccount->account_number }}
-                </h1>
-                <p class="text-sm text-gray-500 capitalize mt-1">
-                    Product: {{ str_replace('_', ' ', $savingsAccount->product_type instanceof \BackedEnum ? $savingsAccount->product_type->value : $savingsAccount->product_type) }} &bull; 
-                    Opened on {{ \Carbon\Carbon::parse($savingsAccount->opened_at)->format('F d, Y') }}
-                </p>
-        </div>
     
 
         {{-- Passbook Transaction Table --}}
@@ -102,7 +105,7 @@
             
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-100">
+                    <thead class="bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks / Ref</th>
@@ -156,6 +159,7 @@
                     </tbody>
                 </table>
             </div>
+        </div>
         </div>
     </div>
 </x-app-layout>
