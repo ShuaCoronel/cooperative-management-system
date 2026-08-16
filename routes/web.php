@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\SavingsTransactionController;
 use App\Http\Controllers\Admin\ShareCapitalTransactionController;
 use App\Http\Controllers\member\DashboardController;
+use App\Http\Controllers\member\SavingsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -63,7 +64,7 @@ Route::middleware(['auth','member'])->prefix('member')->name('member.')->group(f
 
 
     // testing new route manually need to delete
-    Route::get('/savings/show', [DashboardController::class, 'show'])->name('savings.show');
+    Route::get('/savings/{accountNumber}', [SavingsController::class, 'show'])->name('savings.show');
 
 });
 
