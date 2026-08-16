@@ -47,9 +47,9 @@
                             <p class="mt-2 text-3xl font-bold text-gray-900">₱ {{ $account->balance }}</p>
 
                             <!-- test need update dashboard -->
-                            <!-- <a href="{{ route('member.savings.show')}}"> show </a> -->
+                            {{-- <!-- <a href="{{ route('member.savings.show',[$accountNumber => $account->account_number]) }}"> show </a> --> --}}
 
-                            <a href="{{ route('member.savings.show') }}">
+                            <a href="{{ route('member.savings.show', $account->account_number ) }}" wire:navigate>
                                 <p class="mt-2 text-sm text-indigo-600 hover:text-indigo-900 cursor-pointer">View passbook &rarr;</p>
                             </a>
                         </div>
