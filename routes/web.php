@@ -3,11 +3,11 @@
 use App\Enums\UserRole;
 use App\Http\Controllers\Admin\LoanController;
 use App\Http\Controllers\Admin\LoanPaymentController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\SavingsTransactionController;
 use App\Http\Controllers\Admin\ShareCapitalTransactionController;
 use App\Http\Controllers\member\DashboardController;
-use App\Http\Controllers\member\SavingsController;
+use App\Http\Controllers\member\ShowSavingsController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -64,7 +64,7 @@ Route::middleware(['auth','member'])->prefix('member')->name('member.')->group(f
 
 
     // testing new route manually need to delete
-    Route::get('/savings/{accountNumber}', [SavingsController::class, 'show'])->name('savings.show');
+    Route::get('/savings/{accountNumber}', [ShowSavingsController::class, 'show'])->name('savings.show');
 
 });
 

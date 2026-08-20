@@ -7,7 +7,7 @@ use App\Models\Member;
 use Auth;
 use Illuminate\View\View;
 
-class SavingsController extends Controller
+class ShowSavingsController extends Controller
 {
     //
     public function show($accountNumber) : View {

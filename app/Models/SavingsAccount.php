@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-
+use App\Enums\Savings\ProductType;
+use App\Enums\Savings\SavingsTransactionType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,6 +29,7 @@ class SavingsAccount extends Model
    protected $casts = [
 
     'opened_at' => 'date',
+    'product_type'  => ProductType::class,
 
    ];   
 
@@ -55,10 +57,18 @@ class SavingsAccount extends Model
 
         get: function() {
 
-            $deposits = (float) $this->transactions()->where('type','deposit')->sum('amount');
-            $withdrawals = (float) $this->transactions()->where('type','withdrawal')->sum('amount');
+            // $deposits = (float) $this->transactions()->where('type','deposit')->sum('amount');
+            // $withdrawals = (float) $this->transactions()->where('type','withdrawal')->sum('amount');
 
-            return number_format($deposits - $withdrawals,2);
+            $deposits = $this->transactions()
+            ->where('type', SavingsTransactionType::DEPOSIT)->sum('amount') ?? 0;
+
+            $withdrawals = $this->transactions()
+            ->where('type', SavingsTransactionType::WITHDRAWAL)->sum('amount') ?? 0;
+
+
+
+            return bcsub((string) $deposits, (string) $withdrawals, 2);
 
         }
     );
