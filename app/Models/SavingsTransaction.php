@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\ShareCapitalTransactions\TransactionType;
+use App\Enums\Savings\SavingsTransactionType;
+
 use Illuminate\Database\Eloquent\Model;
 use Override;
 
@@ -35,7 +36,7 @@ class SavingsTransaction extends Model
     {
         return [
             'amount'                => 'decimal:2',
-            'type'                  => TransactionType::class,
+            'type'                  => SavingsTransactionType::class,
             'transaction_date'      => 'date',
 
         ];    
