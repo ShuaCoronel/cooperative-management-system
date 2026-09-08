@@ -29,14 +29,14 @@
 
                 <!-- Stat Card 2 (Placeholder for Chart or Metric) -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <div class="text-sm font-medium text-gray-500">Total Loans</div>
-                    <div class="mt-2 text-3xl font-bold text-blue-600">0</div>
+                    <div class="text-sm font-medium text-gray-500">Total No. of Loans</div>
+                    <div class="mt-2 text-3xl font-bold text-red-600">0</div>
                 </div>
+                
 
-                <!-- Stat Card 3 (Placeholder for Chart or Metric) -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <div class="text-sm font-medium text-gray-500">Savings Overview</div>
-                    <div class="mt-2 text-3xl font-bold text-emerald-600">₱0.00</div>
+                    <div class="text-sm font-medium text-gray-500">Shared Capital Pool</div>
+                    <div class="mt-2 text-3xl font-bold text-emerald-600">₱{{$totalSharedCapital}}</div>
                 </div>
 
             </div>
@@ -46,10 +46,10 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead>
                         <tr class="bg-gray-50">
-                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase">Member Name</th>
-                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase">Savings Accounts</th>
-                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase">No. of Loan/s</th>
-                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-600 uppercase">Member Name</th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-600 uppercase">Savings Accounts</th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-600 uppercase">No. of Loan/s</th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-600 uppercase">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -59,7 +59,7 @@
                                     <a href="{{ route('admin.savings.show', $member) }}" 
                                        wire:navigate 
                                        class="text-blue-600 hover:text-blue-900 font-semibold hover:underline">
-                                        {{ $member->full_name ?? $member->name }}
+                                        {{ $member->full_name ?? "Unavailable" }}
                                     </a>
                                 </td>
                                 <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-600 text-center">

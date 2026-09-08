@@ -52,5 +52,11 @@ class ShareCapitalTransaction extends Model
         
     }
 
+    public static function totalSharedCapital (): float {
+
+        return (float)static::query()->where('type','deposit')->sum('amount');
+
+    }
+
 
 }
