@@ -2,9 +2,9 @@
 
 use App\Enums\UserRole;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\LedgerController;
 use App\Http\Controllers\Admin\LoanController;
 use App\Http\Controllers\Admin\LoanPaymentController;
-use App\Http\Controllers\Admin\SavingsController;
 use App\Http\Controllers\Admin\SavingsTransactionController;
 use App\Http\Controllers\Admin\ShareCapitalTransactionController;
 use App\Http\Controllers\member\DashboardController;
@@ -97,7 +97,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Savings account transactions
     Route::post('/savings-accounts/{savingsAccount:account_number}/transactions',[SavingsTransactionController::class,'store'])
     ->name('savings.transactions.store');
-    Route::get('/savings/{savingsAccount}', [SavingsController::class, 'show'])->name('savings.show');
+    Route::get('/ledger/{member:member_id_number}', [LedgerController::class, 'show'])->name('ledger.show');
 
 
 

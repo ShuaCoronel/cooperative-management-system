@@ -56,20 +56,20 @@
                         @foreach ($members as $member)
                             <tr>
                                 <td class="px-3 py-4 whitespace-nowrap text-center">
-                                    <a href="{{ route('admin.savings.show', $member) }}" 
+                                    <a href="{{ route('admin.ledger.show', $member) }}" 
                                        wire:navigate 
                                        class="text-blue-600 hover:text-blue-900 font-semibold hover:underline">
                                         {{ $member->full_name ?? "Unavailable" }}
                                     </a>
                                 </td>
                                 <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-600 text-center">
-                                    {{ $member->savings_accounts_count ?? $member->savingsAccounts->count() }}
+                                    {{ $member->savings_accounts_count }}
                                 </td>
                                 <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-600 text-center">
-                                    {{ $member->loans_count ?? $member->loans?->count() ?? 0 }}
+                                    {{ $member->loans_count }}
                                 </td>
                                 <td class="px-3 py-4 whitespace-nowrap text-sm text-center">
-                                    <a href="{{ route('admin.savings.show', $member) }}" 
+                                    <a href="{{ route('admin.ledger.show', $member) }}" 
                                        wire:navigate 
                                        class="inline-flex items-center px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium rounded transition">
                                         View Ledger &rarr;

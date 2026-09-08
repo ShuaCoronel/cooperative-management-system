@@ -20,13 +20,16 @@
             @endif
 
             {{-- Account Header --}}
+            @foreach ($savingsAccounts as $savingsAccount )
+                
+            
             <div class="bg-white shadow rounded-lg border border-gray-200 p-6 flex flex-col md:flex-row md:items-center md:justify-between">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900">
                         Savings Account: <span class="font-mono text-indigo-600">{{ $savingsAccount->account_number }}</span>
                     </h1>
                     <p class="text-sm text-gray-500 mt-1 capitalize">
-                        Member: <span class="font-semibold text-gray-700">{{ $savingsAccount->member->full_name ?? 'N/A' }} {{ $savingsAccount->member->last_name ?? '' }}</span> <br>
+                        Member: <span class="font-semibold text-gray-700">{{ $savingsAccount->member->full_name ?? 'N/A' }} </span> <br>
                         {{-- &bull; just a bullet --}}
                         Status: <span class="bg-green-100 rounded-sm px-1">{{ $savingsAccount->status instanceof \BackedEnum ? $savingsAccount->status->value : $savingsAccount->status }}</span>
                     </p>
@@ -40,9 +43,16 @@
                 </div>
             </div>
 
+        @endforeach
+           
+            
+
+            
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {{-- Left Column: Transaction Form --}}
+            {{--     
                 <div class="lg:col-span-1">
                     <div class="bg-white shadow rounded-lg border border-gray-200">
                         <div class="px-4 py-5 sm:px-6 border-b border-gray-200 bg-gray-50">
@@ -54,33 +64,34 @@
                             <form action="{{ route('admin.savings.transactions.store', $savingsAccount) }}" method="POST" class="space-y-4">
                                 @csrf
 
-                                {{-- Transaction Type --}}
+                               // Transaction Type
                                 <div>
                                     <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
                                     <select id="type" name="type" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                         <option value="" disabled selected>Select type...</option>
-                                        {{-- Ensure these values match your TransactionType Enum exactly! --}}
+
+                                        // Ensure these values match your TransactionType Enum exactly!
                                         <option value="deposit" @selected(old('type') == 'deposit')>Deposit</option>
                                         <option value="withdrawal" @selected(old('type') == 'withdrawal')>Withdrawal</option>
                                     </select>
                                     @error('type') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                                 </div>
 
-                                {{-- Amount --}}
+                                // Amount
                                 <div>
                                     <label for="amount" class="block text-sm font-medium text-gray-700">Amount (₱)</label>
                                     <input type="number" name="amount" id="amount" step="0.01" min="0.01" value="{{ old('amount') }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                     @error('amount') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                                 </div>
 
-                                {{-- Transaction Date --}}
+                                // Transaction Date
                                 <div>
                                     <label for="transaction_date" class="block text-sm font-medium text-gray-700">Date</label>
                                     <input type="date" name="transaction_date" id="transaction_date" value="{{ old('transaction_date', date('Y-m-d')) }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                     @error('transaction_date') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                                 </div>
 
-                                {{-- Remarks --}}
+                                // Remarks
                                 <div>
                                     <label for="remarks" class="block text-sm font-medium text-gray-700">Remarks (Optional)</label>
                                     <textarea name="remarks" id="remarks" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">{{ old('remarks') }}</textarea>
@@ -96,6 +107,8 @@
                         </div>
                     </div>
                 </div>
+                 
+               --}}
 
                 {{-- Right Column: Recent Ledger --}}
                 <div class="lg:col-span-2">
@@ -148,7 +161,10 @@
                     </div>
                 </div>
 
+
+
             </div>
         </div>
+         
     </div>
 </x-app-layout>
