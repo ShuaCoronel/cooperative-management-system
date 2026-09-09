@@ -52,20 +52,21 @@
                             <th class="px-3 py-3 text-center text-xs font-medium text-gray-600 uppercase">Actions</th>
                         </tr>
                     </thead>
+
+                    
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach ($members as $member)
-                            <tr>
-                                <td class="px-3 py-4 whitespace-nowrap text-center">
-                                    <a href="{{ route('admin.ledger.show', $member) }}" 
-                                       wire:navigate 
-                                       class="text-blue-600 hover:text-blue-900 font-semibold hover:underline">
+                            <tr x-data 
+                                @click="window.location.href = '{{ route('admin.ledger.show', $member) }}'""
+                                class="group hover:bg-[#386bbc] hover:cursor-pointer transition-colors">
+
+                                <td class="px-3 py-4 whitespace-nowrap text-center text-blue-600 group-hover:text-white transition-colors font-semibold">
                                         {{ $member->full_name ?? "Unavailable" }}
-                                    </a>
                                 </td>
-                                <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-600 text-center">
+                                <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-600 text-center group-hover:text-white transition-colors">
                                     {{ $member->savings_accounts_count }}
                                 </td>
-                                <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-600 text-center">
+                                <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-600 text-center group-hover:text-white transition-colors">
                                     {{ $member->loans_count }}
                                 </td>
                                 <td class="px-3 py-4 whitespace-nowrap text-sm text-center">
