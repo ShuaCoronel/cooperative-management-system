@@ -19,6 +19,7 @@ class SavingsAccount extends Model
 
     'member_id',
     'account_number',
+    'account_nickname',
     'product_type',
     'status',
     'opened_at',
@@ -47,6 +48,18 @@ class SavingsAccount extends Model
 
     }
 
+
+
+    // accessor for account nickname for multiple savings accounts
+    protected function displayNickname() : Attribute {
+
+        return Attribute::make( 
+            get: fn() => $this->account_nickname ?? $this->account_number     
+        
+        
+        );
+
+    }
 
 
     // note cline fixed
