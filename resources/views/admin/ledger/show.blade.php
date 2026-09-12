@@ -9,15 +9,6 @@
                 </a>
             </div>
 
-            @if (session('success'))
-                <div class="rounded-md bg-green-50 p-4 border border-green-200">
-                    <div class="flex">
-                        <div class="ml-3">
-                            <h3 class="text-sm font-medium text-green-800">{{ session('success') }}</h3>
-                        </div>
-                    </div>
-                </div>
-            @endif
 
             {{-- Account Header --}}
             @foreach ($savingsAccounts as $savingsAccount )

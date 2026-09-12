@@ -19,7 +19,8 @@ class AdminDashboardController extends Controller
         $totalActive = Member::where('membership_status','active')->count();
         $totalSharedCapital = ShareCapitalTransaction::totalSharedCapital();
 
-
+        // testing component alert success
+        // session()->flash('success','test');
 
         return view('admin.dashboard', compact('members','totalActive','totalSharedCapital'));
     }

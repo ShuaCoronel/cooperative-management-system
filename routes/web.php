@@ -92,7 +92,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 
 
-
+    // GENERAL LEDGER [UPDATED - UPDATE THE LABEL]
     // SAVINGS
     // Savings account transactions
     Route::post('/savings-accounts/{savingsAccount:account_number}/transactions',[SavingsTransactionController::class,'store'])
