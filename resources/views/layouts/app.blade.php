@@ -29,7 +29,8 @@
 
             <!-- Page Content -->
             <main>
-                <x-alerts.success/>
+                {{-- <x-alerts.success/> --}}
+                <x-alerts.toast-alerts/>
                 {{ $slot }}
             </main>
         </div>

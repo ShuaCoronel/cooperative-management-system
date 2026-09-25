@@ -16,6 +16,8 @@ class LedgerController extends Controller
         ->with(['member','transactions' => function($q) { $q->orderBy('transaction_date','desc')->orderBy('id','desc');
         }])->get();
 
+    // //toaster testing
+    // session()->flash('success', 'Ledger data loaded successfully' . $member->full_name);
 
         return view('admin.ledger.show', compact('savingsAccounts'));
     
