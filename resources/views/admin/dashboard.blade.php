@@ -57,7 +57,7 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach ($members as $member)
                             <tr x-data 
-                                @click="window.location.href = '{{ route('admin.ledger.show', $member) }}'""
+                                @click="window.location.href = '{{ route('admin.ledger.show', $member) }}'"
                                 class="group hover:bg-[#386bbc] hover:cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
 
                                 <td class="px-3 py-4 whitespace-nowrap text-center text-blue-600 group-hover:text-white transition-colors font-semibold">

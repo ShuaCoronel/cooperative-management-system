@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
+use Override;
 
 class Member extends Model
 {
@@ -48,10 +50,20 @@ class Member extends Model
     ];
 
     
+    // for ulid
+    #[Override]
+    public function getRouteKeyName()
+    {
+        return 'ulid';
+    }
+
 
     /**
      * The "booted" method of the model.
      * This acts as an automatic interceptor during the model's lifecycle.
+     * 
+     * using event creating to automatically generate member_id_num
+     * 
      */
     protected static function booted(): void
     {
@@ -78,7 +90,17 @@ class Member extends Model
                 // 3. Format and attach the new ID before it hits the database
                 $member->member_id_number = 'MEMBER-' . $year . '-' . str_pad($nextSequence, 5, '0', STR_PAD_LEFT);
             }
+
+
+
+            // create ulid inside event static creating
+            if(empty($member->ulid)) {
+
+                $member->ulid = (string) Str::ulid();
+            }
+
         });
+        
     }
 
 

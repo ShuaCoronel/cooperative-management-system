@@ -97,7 +97,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Savings account transactions
     Route::post('/savings-accounts/{savingsAccount:account_number}/transactions',[SavingsTransactionController::class,'store'])
     ->name('savings.transactions.store');
-    Route::get('/ledger/{member:member_id_number}', [LedgerController::class, 'show'])->name('ledger.show');
+    Route::get('/ledger/{member}', [LedgerController::class, 'show'])->name('ledger.show');
 
 
 
