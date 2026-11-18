@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('savings_accounts', function (Blueprint $table) {
             $table->id();
 
+            $table->ulid()->unique();
+
             $table->foreignId('member_id')->constrained('members')->cascadeOnDelete(); 
             $table->string('account_number')->unique();
             $table->enum('product_type',['regular','time_deposit']);

@@ -10,13 +10,13 @@ use Illuminate\View\View;
 class ShowSavingsController extends Controller
 {
     //
-    public function show($accountNumber) : View {
+    public function show($ulid) : View {
         
         $member = Member::where('user_id',Auth::id())->firstOrFail();
 
         $savingsAccount = $member->savingsAccounts()
         ->with('transactions')
-        ->where('account_number', $accountNumber)->firstOrFail();
+        ->where('ulid', $ulid)->firstOrFail();
 
         return view('member.savings.show',compact('savingsAccount'));
         

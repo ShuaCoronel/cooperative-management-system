@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class SavingsAccount extends Model
 {
@@ -16,7 +17,7 @@ class SavingsAccount extends Model
     use SoftDeletes;
 
     protected $fillable = [
-
+    'ulid',
     'member_id',
     'account_number',
     'account_nickname',
@@ -33,6 +34,27 @@ class SavingsAccount extends Model
     'product_type'  => ProductType::class,
 
    ];   
+
+
+
+   //ULID generate a ULID when creating a new savings account.
+   protected static function booted()
+    {
+        static::creating(function ($savingsAccount) {
+            if (empty($savingsAccount->ulid)) {
+                $savingsAccount->ulid = (string) Str::ulid();
+            }
+        });
+    }
+
+
+    /**
+     * Use 'ulid' for route model binding instead of the numeric id.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'ulid';
+    }
 
 
     public function member(): BelongsTo {

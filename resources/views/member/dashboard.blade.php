@@ -49,7 +49,7 @@
                             <!-- test need update dashboard -->
                             {{-- <!-- <a href="{{ route('member.savings.show',[$accountNumber => $account->account_number]) }}"> show </a> --> --}}
 
-                            <a href="{{ route('member.savings.show', $account->account_number ) }}" wire:navigate>
+                            <a href="{{ route('member.savings.show', $account ) }}" wire:navigate>
                                 <p class="mt-2 text-sm text-indigo-600 hover:text-indigo-900 cursor-pointer">View passbook &rarr;</p>
                             </a>
                         </div>
